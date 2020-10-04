@@ -22,7 +22,7 @@ var creatTable = (id, callbackfn) => {
 
 var updateProfit = (A) => {
     creatTable('profit', (x, y) => {
-        return $('<td>').text(2 * A.x + x + 2 * A.x + y)
+        return $('<td>').text(2 * A.x + x + 2 * A.y + y)
     })
     $(`#profit>tbody>tr:eq(${A.y})>td:eq(${A.x})`).css('background-color', 'rgba(0,123,255,.5)')
 }
