@@ -22,17 +22,24 @@ var creatTable = (id, callbackfn) => {
 
 var updateProfit = (A) => {
     creatTable('profit', (x, y) => {
-        return $('<td>').text(2 * A.x + x + 2 * A.y + y)
+        return $('<td>').text(2 * A.x * x + 2 * A.y * y)
     })
     $(`#profit>tbody>tr:eq(${A.y})>td:eq(${A.x})`).css('background-color', 'rgba(0,123,255,.5)')
 }
 
+var updtaeNet = () => {
+    let x1 = +$('#inputX').find(":selected").val()
+    let y1 = +$('#inputY').find(":selected").val()
+    creatTable('net', (x2, y2) => {
+        return $('<td>').text(2 * x1 * x2 + 2 * y1 * y2 - (x1 ** 2 + y1 ** 2) - (x2 ** 2 + y2 ** 2))
+    })
+    $(`#net>tbody>tr:eq(${y1})>td:eq(${x1})`).css('background-color', 'rgba(0,123,255,.5)')
+}
 
 $(() => {
     creatTable('cost', (x, y) => {
         return $('<td>').text(x ** 2 + y ** 2)
     })
-
     let AList1 = Array.apply(null, {
         length: X + 1
     }).map((v, i) => {
@@ -89,5 +96,10 @@ $(() => {
         x = (x >= AList.length) ? 0 : x
     }, 1000)
 
+
+    updtaeNet()
+
+    $('#inputX').on('change', updtaeNet)
+    $('#inputY').on('change', updtaeNet)
 
 })
