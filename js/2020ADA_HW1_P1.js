@@ -33,7 +33,15 @@ $(() => {
         return $('<td>').text(x ** 2 + y ** 2)
     })
 
-    let AList = Array.apply(null, {
+    let AList1 = Array.apply(null, {
+        length: X + 1
+    }).map((v, i) => {
+        return {
+            x: i,
+            y: i
+        }
+    })
+    let AList2 = Array.apply(null, {
         length: X + 1
     }).map((v, i) => {
         return {
@@ -41,11 +49,44 @@ $(() => {
             y: X - i
         }
     })
+    let AList3 = Array.apply(null, {
+        length: X + 1
+    }).map((v, i) => {
+        return {
+            x: i,
+            y: (i <= 4) ? i : X - i,
+        }
+    })
+    let AList4 = Array.apply(null, {
+        length: X + 1
+    }).map((v, i) => {
+        return {
+            x: (i <= 4) ? i : X - i,
+            y: i,
+        }
+    })
+    let AList5 = Array.apply(null, {
+        length: X + 1
+    }).map((v, i) => {
+        return {
+            x: i,
+            y: 4,
+        }
+    })
+    let AList6 = Array.apply(null, {
+        length: X + 1
+    }).map((v, i) => {
+        return {
+            x: 4,
+            y: i,
+        }
+    })
+    let AList = AList1.concat(AList2).concat(AList3).concat(AList4).concat(AList5).concat(AList6)
     let x = 0;
     let timeoutID = setInterval(() => {
         let A = AList[x++]
         updateProfit(A)
-        x = (x > X) ? 0 : x
+        x = (x >= AList.length) ? 0 : x
     }, 1000)
 
 
