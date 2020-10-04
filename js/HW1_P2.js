@@ -15,10 +15,10 @@ var creatProcessTable = (id, n) => {
     $thead = $('<thead>').append($($tr))
 
     $tbody = $('<tbody>')
-        .append(creatTRwithHeadandArray('T', T))
-        .append(creatTRwithHeadandArray('D', D))
-        .append(creatTRwithHeadandArray('P', P))
-        .append(creatTRwithHeadandArray('K', K))
+        .append(creatTRwithHeadandArray('player', T))
+        .append(creatTRwithHeadandArray('defence', D))
+        .append(creatTRwithHeadandArray('explosive power', P))
+        .append(creatTRwithHeadandArray('damage', K))
     $table = $('<table>').addClass('table').addClass('table-bordered')
         .append($thead).append($tbody)
     $(`#${id}`).append($table)
@@ -89,8 +89,10 @@ $(() => {
         let M = +strEventsList[0].split(' ')[1]
         T = Array.apply(null, {
             length: N
+        }).map(x => 'null')
+        D = Array.apply(null, {
+            length: N
         }).map(x => 0)
-        D = [...T]
         P = [...T]
         K = [...T]
         let evemtsList = []
