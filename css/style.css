@@ -16,5 +16,6 @@ section {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: #BDBDBD;
+    padding-bottom: 20px;
     margin-bottom: 30px;
 }
