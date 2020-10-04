@@ -93,8 +93,8 @@ $(() => {
         D = Array.apply(null, {
             length: N
         }).map(x => 0)
-        P = [...T]
-        K = [...T]
+        P = [...D]
+        K = [...D]
         let evemtsList = []
         for (let i = 1; i <= M; i++) {
             let event = strEventsList[i].split(' ')
