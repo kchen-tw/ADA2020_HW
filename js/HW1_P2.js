@@ -37,7 +37,8 @@ var eventToDiv = (event) => {
 
 var event_newuser = (event) => {
     let i = event.c - 1
-    T[i] = `<em>T<sub>${event.i}</sub></em>`
+    // T[i] = `<em>T<sub>${event.i}</sub></em>`
+    T[i] = +event.i + 1
     D[i] = +event.d
     P[i] = 0
     K[i] = 0
@@ -47,6 +48,7 @@ var event_attack = (event) => {
     for (let i = event.l - 1; i <= event.r - 1; i++) {
         //if (T[i] != 'null') {
         P[i] = event.p
+        if (event.i < T[i]) continue
         if (D[i] <= P[i]) {
             K[i] += +event.k
         }
@@ -54,26 +56,26 @@ var event_attack = (event) => {
     }
 }
 
+var updateEvent = (event) => {
+    switch (event.T) {
+        case 'P':
+            event_newuser(event)
+            break
+        case 'A':
+            event_attack(event)
+            break
+    }
+}
+
 var mergeEvent = (levent, revent) => {
-    if (levent.T == "P" && revent.T == "P") {
-        event_newuser(levent)
-        //event_newuser(revent)
-        //creatProcessTable('merge', evemtsList.length)
-    } else if (levent.T == "A" && revent.T == "A") {
-        event_attack(levent)
-        //event_attack(revent)
-        //creatProcessTable('merge', evemtsList.length)
-    } else if (levent.T == "P" && revent.T == "A") {
-        event_newuser(levent)
-        //creatProcessTable('merge', evemtsList.length)
-        //return revent
-    } else if (levent.T == "A" && revent.T == "P") {
-        event_attack(levent)
-        //creatProcessTable('merge', evemtsList.length)
-        //return revent
+    if (typeof levent !== "undefined") {
+        updateEvent(levent)
+    }
+    if (typeof revent !== "undefined") {
+        updateEvent(revent)
     }
     creatProcessTable('merge', T.length)
-    return revent
+    return
 }
 
 
@@ -88,7 +90,7 @@ var solve = (l, r, evemtsList) => {
         return evemtsList[l]
     }
     let mid = (l + r) >> 1
-    //let md = evemtsList[min];
+    // let md = evemtsList[min];
     // let levent = solve(l, mid, evemtsList)
     // let revent = solve(mid + 1, r, evemtsList)
     return mergeEvent(solve(l, mid, evemtsList), solve(mid + 1, r, evemtsList))
@@ -102,12 +104,10 @@ $(() => {
         let M = +strEventsList[0].split(' ')[1]
         T = Array.apply(null, {
             length: N
-        }).map(x => 'null')
-        D = Array.apply(null, {
-            length: N
         }).map(x => 0)
-        P = [...D]
-        K = [...D]
+        D = [...T]
+        P = [...T]
+        K = [...T]
         let evemtsList = []
         for (let i = 1; i <= M; i++) {
             let event = strEventsList[i].split(' ')
@@ -122,6 +122,7 @@ $(() => {
             } else if (event[0] == 'A') {
                 evemtsList.push({
                     T: event[0],
+                    i: i - 1,
                     l: event[1],
                     r: event[2],
                     p: event[3],
