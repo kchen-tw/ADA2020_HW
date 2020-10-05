@@ -38,16 +38,18 @@ var eventToDiv = (event) => {
 var event_newuser = (event) => {
     T[event.c] = `<em>T<sub>${event.i}</sub></em>`
     D[event.c] = +event.d
+    P[event.c] = 0
+    K[event.c] = 0
 }
 
 var event_attack = (event) => {
     for (let i = event.l; i <= event.r; i++) {
-        if (T[i] != 0) {
-            P[i] = event.p
-            if (D[i] <= event.p) {
-                K[i] += +event.k
-            }
+        //if (T[i] != 'null') {
+        P[i] = event.p
+        if (D[i] <= P[i]) {
+            K[i] += +event.k
         }
+        //}
     }
 }
 
