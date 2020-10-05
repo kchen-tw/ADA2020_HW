@@ -36,14 +36,15 @@ var eventToDiv = (event) => {
 }
 
 var event_newuser = (event) => {
-    T[event.c] = `<em>T<sub>${event.i}</sub></em>`
-    D[event.c] = +event.d
-    P[event.c] = 0
-    K[event.c] = 0
+    let i = event.c - 1
+    T[i] = `<em>T<sub>${event.i}</sub></em>`
+    D[i] = +event.d
+    P[i] = 0
+    K[i] = 0
 }
 
 var event_attack = (event) => {
-    for (let i = event.l; i <= event.r; i++) {
+    for (let i = event.l - 1; i <= event.r - 1; i++) {
         //if (T[i] != 'null') {
         P[i] = event.p
         if (D[i] <= P[i]) {
@@ -53,15 +54,7 @@ var event_attack = (event) => {
     }
 }
 
-var solve = (l, r, evemtsList) => {
-    if (r - l <= 0) {
-        $('#divide>tbody>tr').append($('<td>').append(eventToDiv(evemtsList[l])))
-        return evemtsList[l]
-    }
-    let mid = (l + r) >> 1
-    //let md = evemtsList[min];
-    let levent = solve(l, mid, evemtsList)
-    let revent = solve(mid + 1, r, evemtsList)
+var mergeEvent = (levent, revent) => {
     if (levent.T == "P" && revent.T == "P") {
         event_newuser(levent)
         //event_newuser(revent)
@@ -81,6 +74,24 @@ var solve = (l, r, evemtsList) => {
     }
     creatProcessTable('merge', T.length)
     return revent
+}
+
+
+var solve = (l, r, evemtsList) => {
+    // if (r - l == 1) {
+    //     $('#divide>tbody>tr').append($('<td>').append(eventToDiv(evemtsList[l])))
+    //     $('#divide>tbody>tr').append($('<td>').append(eventToDiv(evemtsList[r])))
+    //     return mergeEvent(evemtsList[l], evemtsList[r])
+    // } else
+    if (r - l == 0) {
+        $('#divide>tbody>tr').append($('<td>').append(eventToDiv(evemtsList[l])))
+        return evemtsList[l]
+    }
+    let mid = (l + r) >> 1
+    //let md = evemtsList[min];
+    // let levent = solve(l, mid, evemtsList)
+    // let revent = solve(mid + 1, r, evemtsList)
+    return mergeEvent(solve(l, mid, evemtsList), solve(mid + 1, r, evemtsList))
 }
 
 $(() => {
@@ -123,6 +134,7 @@ $(() => {
         // 增加表格行數，行數等於二分法的高，也就是 log2(M) 
         let L = Math.ceil(Math.log2(M))
         $(`#merge`).empty()
+        $('#divide>tbody>tr').empty()
         solve(0, M - 1, evemtsList)
     })
 })
